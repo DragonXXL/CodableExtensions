@@ -19,21 +19,21 @@ class foo: Codable {
 ```
 {
   "foo1": "1"
-  "foo" : {"foo": 1}
+  "foo2" : {"foo": 1}
 }
-// 如果希望foo只希望是Dictinary, 解码会报错不支持类型Any
+// 如果希望foo2只希望是解码Dictionary, 属性必须都遵循Codable协议，解码会报错不支持类型Any
 class foo: Codable {
   var foo1: String?
-  var foo: [String: Any]?
+  var foo2: [String: Any]?
 }
 
 // 使用JSON代替Any
 class foo: Codable {
   var foo1: String?
-  var foo: [String: JSON]?
+  var foo2: [String: JSON]?
 }
 // 如果想获取原始类型
-foo.dictionaryValue
-foo.mapAnyValues()
+foo2.dictionaryValue
+foo2.mapAnyValues()
 
 ```
