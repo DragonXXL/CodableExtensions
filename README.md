@@ -1,7 +1,7 @@
 # CodableExtensions
 ### DecodableDefault.swift 主要功能
 
-Codable仅支持默认值0
+Codable仅支持默认值
 ```
 // 例:
 class foo: Codable {
