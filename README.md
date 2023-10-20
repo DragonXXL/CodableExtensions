@@ -3,13 +3,17 @@
 
 Codable仅支持默认值0
 ```
-// 例: 
-@Default.EmptyInt var foo: Int?
+// 例:
+class foo: Codable {
+  @Default.EmptyInt var foo: Int?
+}
 ```
 Codable同时支持默认值和Combine的 @Published属性数据流
 ```
 // 例:
-@DefaultPublished.EmptyInt var foo: Int?
+class foo: Codable {
+  @DefaultPublished.EmptyInt var foo: Int?
+}
 ```
 ### JSON.swift 主要功能
 ```
