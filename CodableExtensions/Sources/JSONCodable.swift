@@ -1,7 +1,14 @@
 //
-//  Copyright © FINN.no AS, Inc. All rights reserved.
+//  JSONCodable.swift
+//
+//  Created by XuXiaoLong on 19/6/2024.
 //
 
+
+import Foundation
+
+///  JSONCodable编码 key 必须是String类型
+@dynamicMemberLookup
 public enum JSONCodable: Codable, Equatable, Hashable {
     case null
     case int(Int)
@@ -12,6 +19,51 @@ public enum JSONCodable: Codable, Equatable, Hashable {
     indirect case dictionary([String: JSONCodable])
 
     // MARK: - Value
+
+    var objectValue: [String: JSONCodable]? {
+        switch self {
+        case .dictionary(let object):
+            let mapped: [String: JSONCodable] = Dictionary(uniqueKeysWithValues:
+                object.map { (key, value) in (key, value) })
+            return mapped
+        default: return nil
+        }
+    }
+
+    var arrayValue: [JSONCodable]? {
+        switch self {
+        case .array(let array): return array
+        default: return nil
+        }
+    }
+
+    var stringValue: String? {
+        switch self {
+        case .string(let string): return string
+        default: return nil
+        }
+    }
+
+    var doubleValue: Double? {
+        switch self {
+        case .double(let double): return double
+        default: return nil
+        }
+    }
+
+    var intValue: Int? {
+        switch self {
+        case .int(let int): return int
+        default: return nil
+        }
+    }
+
+    var boolValue: Bool? {
+        switch self {
+        case .bool(let bool): return bool
+        default: return nil
+        }
+    }
 
     public var value: Any? {
         switch self {
@@ -48,6 +100,15 @@ public enum JSONCodable: Codable, Equatable, Hashable {
             self = .array(array.compactMap({ JSONCodable($0) }))
         case let dictionary as [String: Any]:
             self = .dictionary(dictionary.compactMapValues({ JSONCodable($0) }))
+        case let number as NSNumber:
+            let numberStr = String(cString: number.objCType)
+            if numberStr == "q" {
+                self = .int(number.intValue)
+            } else if numberStr == "c" {
+                self = .bool(number.boolValue)
+            } else {
+                self = .double(number.doubleValue)
+            }
         default:
             return nil
         }
@@ -98,6 +159,27 @@ public enum JSONCodable: Codable, Equatable, Hashable {
         case let .dictionary(value):
             try container.encode(value)
         }
+    }
+}
+
+// MARK: - subscript
+extension JSONCodable {
+    subscript(index: Int) -> JSONCodable? {
+        switch self {
+        case .array(let array): return array[index]
+        default: return nil
+        }
+    }
+    
+    subscript(key: String) -> JSONCodable? {
+        guard case .dictionary(let dictionary) = self,
+              let value = dictionary[key]
+        else { return nil }
+        return value
+    }
+
+    subscript(dynamicMember member: String) -> JSONCodable {
+        return self[member] ?? .null
     }
 }
 

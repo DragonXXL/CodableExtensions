@@ -1,5 +1,17 @@
+//
+//  JSON.swift
+//
+//  Created by XuXiaoLong on 19/6/2024.
+//
+
 import Foundation
 
+///  JSONCodable编码 key 是String或Int类型
+///
+///      let json = JSON.init(["name": "foo"])
+///      // 支持动态获取成员两种获取value方式
+///      debugPrint("\(json?.name ?? "") == \(json?["name"] ?? "")")
+///
 @dynamicMemberLookup
 enum JSON: Equatable, Hashable {
     // MARK: - members
@@ -54,14 +66,6 @@ enum JSON: Equatable, Hashable {
         }
     }
 
-    subscript(key: String) -> JSON? {
-        guard let jsonKey = Key(stringValue: key),
-            case .object(let object) = self,
-            let value = object[jsonKey]
-            else { return nil }
-        return value
-    }
-
     var stringValue: String? {
         switch self {
         case .string(let string): return string
@@ -83,13 +87,6 @@ enum JSON: Equatable, Hashable {
         }
     }
 
-    subscript(index: Int) -> JSON? {
-        switch self {
-        case .array(let array): return array[index]
-        default: return nil
-        }
-    }
-
     var boolValue: Bool? {
         switch self {
         case .bool(let bool): return bool
@@ -99,28 +96,42 @@ enum JSON: Equatable, Hashable {
 
     var anyValue: Any? {
         switch self {
+        case .null: return nil
         case .string(let string): return string
         case .double(let double): return double
         case .int(let int): return int
         case .bool(let bool): return bool
-        case .object(let object):
-            return Dictionary(uniqueKeysWithValues:
-                object.compactMap { (key, value) -> (String, Any)? in
-                    if let nonNilValue = value.anyValue {
-                        return (key.stringValue, nonNilValue)
-                    } else { return nil }
-                })
         case .array(let array):
             return array.compactMap{ $0.anyValue }
-        case .null:
-            return nil
+        case .object(let object):
+            return Dictionary(uniqueKeysWithValues:
+                                object.compactMap { (key, value) -> (String, Any)? in
+                if let nonNilValue = value.anyValue {
+                    return (key.stringValue, nonNilValue)
+                } else { return nil }
+            })
         }
     }
 
     var dictionaryValue: [String: Any]? {
         return anyValue as? [String: Any]
     }
-    
+
+    subscript(index: Int) -> JSON? {
+        switch self {
+        case .array(let array): return array[index]
+        default: return nil
+        }
+    }
+
+    subscript(key: String) -> JSON? {
+        guard let jsonKey = Key(stringValue: key),
+            case .object(let object) = self,
+            let value = object[jsonKey]
+            else { return nil }
+        return value
+    }
+
     subscript(dynamicMember member: String) -> JSON {
         return self[member] ?? .null
     }
@@ -130,25 +141,37 @@ enum JSON: Equatable, Hashable {
 extension JSON: Codable {
 
     public init?(_ value: Any) {
-        if let string = value as? String { self = .string(string) }
-        else if let number = value as? NSNumber {
-            self = .double(number.doubleValue)
-        }
-        else if let double = value as? Double { self = .double(double) }
-        else if let float = value as? Float { self = .double(Double(float)) }
-        else if let object = value as? [String: Any] {
+        switch value {
+        case let string as String:
+            self = .string(string)
+        case let int as Int:
+            self = .int(int)
+        case let double as Double:
+            self = .double(double)
+        case let float as Float:
+            self = .double(Double(float))
+        case let float as CGFloat:
+            self = .double(Double(float))
+        case let bool as Bool:
+            self = .bool(bool)
+        case let array as [Any]:
+            self = .array(array.compactMap(JSON.init))
+        case let object as [String: Any]:
             var result: [Key: JSON] = [:]
-            for (key, subvalue) in object {
-                result[Key(key)] = JSON(subvalue)
+            for (key, subValue) in object {
+                result[Key(key)] = JSON(subValue)
             }
             self = .object(result)
-        }
-        else if let array = value as? [Any] {
-            self = .array(array.compactMap(JSON.init))
-        }
-        else if let bool = value as? Bool { self = .bool(bool) }
-        else if let int = value as? Int { self = .int(int) }
-        else {
+        case let number as NSNumber:
+            let numberStr = String(cString: number.objCType)
+            if numberStr == "q" {
+                self = .int(number.intValue)
+            } else if numberStr == "c" {
+                self = .bool(number.boolValue)
+            } else {
+                self = .double(number.doubleValue)
+            }
+        default:
             return nil
         }
     }
