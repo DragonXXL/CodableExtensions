@@ -1,9 +1,7 @@
 //
 //  JSONDecoder+Extesion.swift
-//  JSONCodable
 //
-//  Created by Hackice on 2019/6/20.
-//  Copyright © 2019 Hackice. All rights reserved.
+//  Created by XuXiaoLong on 19/10/2024.
 //
 
 protocol DefaultCodingKey: CodingKey {

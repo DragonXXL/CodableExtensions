@@ -1,0 +1,16 @@
+PODS:
+  - CodableExtensions (1.0.0)
+
+DEPENDENCIES:
+  - CodableExtensions (from `./`)
+
+EXTERNAL SOURCES:
+  CodableExtensions:
+    :path: "./"
+
+SPEC CHECKSUMS:
+  CodableExtensions: 221ea35aadc0b81da03847cb3c237152037106e2
+
+PODFILE CHECKSUM: 1382bd4549f0b6659a8f7229a2aaa057a3127953
+
+COCOAPODS: 1.15.2

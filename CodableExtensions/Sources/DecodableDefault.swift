@@ -1,3 +1,8 @@
+//
+//  DecodableDefault.swift
+//
+//  Created by XuXiaoLong on 19/10/2024.
+//
 
 import Foundation
 
@@ -129,16 +134,22 @@ extension Default {
 }
 
 // MARK: - Codable同时支持默认值和Combine得 @Published属性数据流
-// 例: @DefaultPublished.EmptyInt var foo: Int?
+
+/// 例:
+///
+///     @DefaultPublished.EmptyInt var foo: Int?
+///
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 enum DefaultPublished {
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 protocol PublishedCodableDefaultSource {
     associatedtype Value: Codable
 
     static var defaultValue: Value { get }
 }
-
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension DefaultPublished {
     @propertyWrapper
     class Wrapper<Source: PublishedCodableDefaultSource>: Codable {
@@ -165,6 +176,7 @@ extension DefaultPublished {
     }
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension DefaultPublished {
     typealias EmptyList<T: List> = Wrapper<Sources.EmptyList<T>>
     typealias EmptyMap<T: Map> = Wrapper<Sources.EmptyMap<T>>
@@ -249,6 +261,7 @@ extension DefaultPublished {
 
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension KeyedDecodingContainer {
     func decode<T>(_ type: DefaultPublished.Wrapper<T>.Type,
                    forKey key: Key) throws -> DefaultPublished.Wrapper<T> {
@@ -256,7 +269,7 @@ extension KeyedDecodingContainer {
     }
 }
 
-
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 private class PublishedWrapper<T> {
     @Published private(set) var value: T
 
@@ -265,18 +278,21 @@ private class PublishedWrapper<T> {
     }
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Published {
     var unofficialValue: Value {
         PublishedWrapper(self).value
     }
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Published: Decodable where Value: Decodable {
     public init(from decoder: Decoder) throws {
         self.init(wrappedValue: try Value.init(from: decoder))
     }
 }
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 extension Published: Encodable where Value: Encodable {
     public func encode(to encoder: Encoder) throws {
         try unofficialValue.encode(to: encoder)
