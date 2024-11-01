@@ -92,8 +92,8 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "CodableExtensions/Sources/*.swift"
-  spec.exclude_files = "CodableExtensions/Exclude"
+  spec.source_files  = "CodableUtils/Sources/*.swift"
+  spec.exclude_files = "CodableUtils/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
 
