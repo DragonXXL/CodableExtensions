@@ -1,8 +1,8 @@
 {
-  "name": "CodableExtensions",
+  "name": "CodableUtils",
   "version": "1.0.0",
-  "summary": "CodableExtensions是基于Codable解码器的扩展",
-  "description": "基于Codable解码器的扩展",
+  "summary": "CodableUtils是基于Codable",
+  "description": "CodableUtils是基于Codable解码器的扩展",
   "homepage": "https://github.com/DragonXXL/CodableExtensions",
   "license": {
     "type": "MIT",

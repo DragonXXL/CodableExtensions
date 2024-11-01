@@ -1,5 +1,5 @@
 #
-#  Be sure to run `pod spec lint CodableExtensions.podspec' to ensure this is a
+#  Be sure to run `pod spec lint CodableUtils.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see https://guides.cocoapods.org/syntax/podspec.html
@@ -15,9 +15,9 @@ Pod::Spec.new do |spec|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  spec.name         = "CodableExtensions"
+  spec.name         = "CodableUtils"
   spec.version      = "1.0.0"
-  spec.summary      = "CodableExtensions是基于Codable"
+  spec.summary      = "CodableUtils是基于Codable"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
-                        CodableExtensions是基于Codable解码器的扩展
+                        CodableUtils是基于Codable解码器的扩展
                    DESC
 
   spec.homepage     = "https://github.com/DragonXXL/CodableExtensions"

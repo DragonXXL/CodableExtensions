@@ -6,12 +6,12 @@ inhibit_all_warnings!
 
 platform :ios, '13.0'
 
-target 'CodableExtensions' do
+target 'CodableUtils' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for CodableExtensions
-  pod 'CodableExtensions', :path => './'
+  # Pods for CodableUtils
+  pod 'CodableUtils', :path => './'
 end
 
 post_install do |installer|

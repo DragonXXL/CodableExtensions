@@ -1,0 +1,6 @@
+framework module Pods_CodableUtils {
+  umbrella header "Pods-CodableUtils-umbrella.h"
+
+  export *
+  module * { export * }
+}
