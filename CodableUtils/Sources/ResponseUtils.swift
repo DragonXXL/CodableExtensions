@@ -189,6 +189,7 @@ struct ResponseModel<T>: Codable where T: Codable {
 
     var msg: String? {
         if code != 0 {
+            // 根据code获取国际化对应提示内容
 //            return LaunchCore.textFori18nConfig(code: "\(code)", messages: message)
         }
         return nil
