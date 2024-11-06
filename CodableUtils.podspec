@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
                         CodableUtils是基于Codable解码器的扩展
                    DESC
 
-  spec.homepage     = "https://github.com/DragonXXL/CodableExtensions"
+  spec.homepage     = "https://github.com/DragonXXL/CodableUtils"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -81,7 +81,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/DragonXXL/CodableExtensions.git", :tag => "#{spec.version}" }
+  spec.source       = { :git => "https://github.com/DragonXXL/CodableUtils.git", :tag => "#{spec.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
